@@ -35,16 +35,86 @@
 	providing patches for components outside of this project's scope.
       </p>
       <p>
-	<a href="http://bugs.kde.org/show_bug.cgi?id=30302">Bug 30302</a>
-
-	<a href="http://bugs.kde.org/show_bug.cgi?id=76423">Bug 76423</a>
+        Bookmarklets have been discussed on the KDE bug tracker before, for historical 
+        information and guidance, please consult the following:
+        <ul>
+          <li>
+            <a href="http://bugs.kde.org/show_bug.cgi?id=30302">Bug 30302</a>
+          </li>
+          <li>
+            <a href="http://bugs.kde.org/show_bug.cgi?id=76423">Bug 76423</a>
+          </li>
+        </ul>
       </p>
     </blockquote>
     <h2>Concept</h2>
 
     <blockquote>
       <p>
-	<div class="note"><img src="/component_interaction.png" width="309" height="570" />This is some text here.</div>
+        <div class="note">The following is in a state of flux.</div>
+      </p>
+      <p>
+        <div class="dia">
+          <img src="/component_interaction.png" width="309" height="570" />
+        </div>
+      </p>
+      <p>
+        The following paragraphs give a quick overview about what this project
+        will try to achieve.  The diagram to the right will assist as you read
+        these quick blurbs. Hopefully, the text here is coherent and applicable
+        in a meaningful and implementable way.
+      </p>
+
+      <p>
+        To begin, in a very obvious way, the user will store their bookmarklets
+        in the Personal Bookmarks folder--which is displayable in the main
+        Konqueror window--and will click on the script there.  This clicking
+        action will invoke a KIO Slave built to receive data for the JavaScript
+        protocol.  This protocol will be a kin to the data protocol KIO slave
+        where the protocol configuration is set to receive Raw data.  The
+        JavaScript protocol utilizes the Raw data as an executable script,
+        prior to which it will perform some cleanup and prechecks.  
+      </p>
+
+      <p>
+        In order for the script to execute on the webpage the User is looking
+        at, the Slave needs to instruct Konqueror to go back one step in its
+        History.  At this point, either the slave or the plugin needs to do
+        cleanup of the History.  If it is at all possible to instruct the 
+        protocol not to put the current action in History, that would be more
+        optimal and potentially more secure.  These instructions to Konqueror
+        will be done via DCOP. The Konqueror instance will be identified by
+        using findObject().
+      </p>
+
+      <p>
+        Before actually executing the JavaScript, there are several checks that
+        need to be made. These are:
+        <ul>
+          <li>See if the current instance allows JavaScript execution.</li>
+          <li>See if the user has answered whether to execute Bookmarklets before.</li>
+          <li>[Optional] Pre-parse the JavaScript checking for no-no's.</li>
+        </ul>
+        If any of these results in a negative, execution will immediately stop
+        and currently will appear to be a no-op to the user.  An infobox may be
+        appropriate .. but won't be an immediate need.
+      </p>
+
+
+      <br clear="right"/>
+      <p>
+        <div align="center"><img src="/ask_dialog.png" width="447" height="341" /></div>
+        <div class="caption">
+          The Confirmation Dialog
+        </div>
+      </p>
+      <p>
+        This is merely an example dialog box, it will probably change. The 
+        purpose of the box will also allow the user to give permission to 
+        Konqlets to "remember" what they would like to do in the future if
+        another Bookmarklet is encountered. It's possible to add a menu item
+        to the Tools > Konqlets menu of Konqueror such that this setting can
+        be changed via the Plugin.
       </p>
     </blockquote>
 
@@ -52,7 +122,7 @@
 
     <blockquote>
       <p>
-	Current Maintainer: <a href="mailto:jeff.p!i$t$m%a^n@msa.hinet.net(sans!$$%^)">Jeff Pitman</a>
+	Current Maintainer: <a href="mailto:symbiont@@berlios.de(sansextra@)">Jeff Pitman</a>
       </p>
     </blockquote>
 
